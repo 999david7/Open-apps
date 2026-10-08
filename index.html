@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Replace Big Tech</title>
+<meta name="description" content="Small, native, private apps built to replace big tech products.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Pinstripe&family=Zen+Dots&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ORBIS design language: white canvas, black ink, hairlines, one amber alert. */
+  :root {
+    --canvas: #FEFEFE;
+    --canvas-soft: #F5F5F5;
+    --surface: rgba(0,0,0,.04);
+    --surface-hover: rgba(0,0,0,.07);
+    --line: rgba(0,0,0,.10);
+    --line-strong: rgba(0,0,0,.22);
+    --ink: #0A0A0B;
+    --ink-mute: rgba(10,10,11,.52);
+    --ink-whisper: rgba(10,10,11,.30);
+    --ink-inverse: #FEFEFE;
+    --alert: #D4860A;
+    --positive: #2D7A4A;
+    --negative: #B83232;
+    --r-xs: 3px; --r-sm: 6px; --r-md: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --canvas: #0A0A0B; --canvas-soft: #141416;
+      --surface: rgba(255,255,255,.05); --surface-hover: rgba(255,255,255,.09);
+      --line: rgba(255,255,255,.12); --line-strong: rgba(255,255,255,.28);
+      --ink: #F5F5F5; --ink-mute: rgba(245,245,245,.56); --ink-whisper: rgba(245,245,245,.34);
+      --ink-inverse: #0A0A0B; --alert: #F0A22A; --positive: #4FB27A; --negative: #E06060;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --canvas: #0A0A0B; --canvas-soft: #141416;
+    --surface: rgba(255,255,255,.05); --surface-hover: rgba(255,255,255,.09);
+    --line: rgba(255,255,255,.12); --line-strong: rgba(255,255,255,.28);
+    --ink: #F5F5F5; --ink-mute: rgba(245,245,245,.56); --ink-whisper: rgba(245,245,245,.34);
+    --ink-inverse: #0A0A0B; --alert: #F0A22A; --positive: #4FB27A; --negative: #E06060;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--canvas); color: var(--ink);
+    font: 15px/1.6 Inter, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  .eyebrow {
+    font-family: "Zen Dots", sans-serif; font-size: 10px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-whisper);
+  }
+  .pin { font-family: "Alumni Sans Pinstripe", sans-serif; font-weight: 400; line-height: .9; }
+
+  /* Header */
+  header { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--canvas); z-index: 10; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand .mark { width: 22px; height: 22px; border: 1px solid var(--ink); border-radius: 50%; position: relative; }
+  .brand .mark::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--alert); }
+  .brand .eyebrow { color: var(--ink); font-size: 11px; }
+  nav { display: flex; align-items: center; gap: 4px; }
+  nav a { text-decoration: none; padding: 6px 10px; border-radius: var(--r-sm); }
+  nav a:hover { background: var(--surface-hover); }
+  nav a.eyebrow { color: var(--ink-mute); }
+  .icon-btn {
+    width: 30px; height: 30px; display: grid; place-items: center; cursor: pointer;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: none; color: var(--ink);
+  }
+  .icon-btn:hover { background: var(--surface-hover); }
+
+  /* Hero */
+  .hero { padding: 88px 0 72px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font-size: clamp(64px, 12vw, 148px); margin: 18px 0 24px; letter-spacing: -.01em; }
+  .hero h1 em { font-style: normal; color: var(--alert); }
+  .hero p.lead { max-width: 560px; color: var(--ink-mute); font-size: 17px; margin: 0 0 32px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; text-decoration: none;
+    font-family: "Zen Dots", sans-serif; font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    border: 1px solid var(--ink); border-radius: var(--r-sm);
+  }
+  .btn.solid { background: var(--ink); color: var(--ink-inverse); }
+  .btn:not(.solid):hover { background: var(--surface-hover); }
+  .btn.solid:hover { opacity: .88; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  .stat { padding: 28px 24px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat .num { font-size: 64px; display: block; margin-top: 10px; }
+  .stat .num small { font-size: 28px; color: var(--ink-mute); margin-left: 4px; }
+
+  /* Sections */
+  section.block { padding: 80px 0; border-bottom: 1px solid var(--line); }
+  .section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
+  .section-head h2 { font-size: clamp(44px, 7vw, 72px); margin: 10px 0 0; }
+
+  /* Principles */
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+  .principle { padding: 28px; border-right: 1px solid var(--line); }
+  .principle:last-child { border-right: 0; }
+  .principle h3 { font-size: 40px; margin: 14px 0 8px; }
+  .principle p { margin: 0; color: var(--ink-mute); }
+  .idx { color: var(--alert); }
+
+  /* Project card */
+  .project { border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+  .project + .project { margin-top: 24px; }
+  .project-top { display: grid; grid-template-columns: 1.05fr 1fr; }
+  .project-info { padding: 36px; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+  .project-info h3 { font-size: 88px; margin: 14px 0 6px; }
+  .project-info .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 24px; }
+  .tag { border: 1px solid var(--line); border-radius: var(--r-xs); padding: 3px 8px; font-size: 12px; color: var(--ink-mute); }
+  .tag.amber { border-color: var(--alert); color: var(--alert); }
+  .project-info p { color: var(--ink-mute); margin: 0; }
+  .project-info .btns { margin-top: auto; padding-top: 28px; }
+  .status { display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--positive); }
+
+  /* Browser mock */
+  .mock-wrap { background: var(--canvas-soft); padding: 36px; display: grid; place-items: center; }
+  .mock { width: 100%; max-width: 440px; aspect-ratio: 4 / 3; background: var(--canvas); border: 1px solid var(--line-strong); border-radius: var(--r-md); display: grid; grid-template-columns: 30% 1fr; overflow: hidden; box-shadow: 0 18px 40px -24px rgba(0,0,0,.35); }
+  .mock-side { border-right: 1px solid var(--line); padding: 10px 8px; display: flex; flex-direction: column; gap: 5px; }
+  .lights { display: flex; gap: 4px; margin-bottom: 8px; }
+  .lights i { width: 7px; height: 7px; border-radius: 50%; background: var(--line-strong); }
+  .m-url { height: 14px; border-radius: var(--r-xs); background: var(--surface); margin-bottom: 6px; }
+  .m-group { display: flex; align-items: center; gap: 5px; font-family: "Zen Dots"; font-size: 6px; letter-spacing: .14em; color: var(--ink-whisper); margin-top: 4px; }
+  .m-group b { width: 5px; height: 5px; border-radius: 50%; }
+  .m-tab { height: 12px; border-radius: var(--r-xs); background: var(--surface); }
+  .m-tab.on { background: var(--ink); }
+  .mock-main { display: grid; place-items: center; text-align: center; position: relative; }
+  .mock-main .clock { font-size: clamp(48px, 9vw, 72px); }
+  .mock-main .eyebrow { font-size: 6px; }
+  .mock-stats { display: flex; gap: 12px; justify-content: center; margin-top: 8px; }
+  .mock-stats div { font-family: "Alumni Sans Pinstripe"; font-size: 20px; line-height: 1; }
+  .shield { position: absolute; top: 10px; right: 10px; width: 18px; height: 18px; border: 1px solid var(--line); border-radius: var(--r-xs); display: grid; place-items: center; color: var(--alert); }
+
+  /* Features */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .feature { padding: 26px 28px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .feature:nth-child(3n) { border-right: 0; }
+  .feature:nth-last-child(-n+3) { border-bottom: 0; }
+  .feature h4 { margin: 10px 0 6px; font-weight: 500; font-size: 15px; }
+  .feature p { margin: 0; color: var(--ink-mute); font-size: 14px; }
+
+  /* Details tabs */
+  .details { border-top: 1px solid var(--line); }
+  .tabs { display: flex; border-bottom: 1px solid var(--line); overflow-x: auto; }
+  .tabs button { background: none; border: 0; border-right: 1px solid var(--line); padding: 14px 22px; cursor: pointer; color: var(--ink-whisper); }
+  .tabs button[aria-selected="true"] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--alert); }
+  .panel { padding: 28px; }
+  .panel[hidden] { display: none; }
+  .kbd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 28px; }
+  .kbd-row { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .kbd-row span { color: var(--ink-mute); }
+  kbd { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; border: 1px solid var(--line); border-radius: var(--r-xs); padding: 1px 6px; background: var(--surface); white-space: nowrap; }
+  ol.steps { margin: 0; padding-left: 20px; color: var(--ink-mute); }
+  ol.steps li { margin-bottom: 8px; }
+  ol.steps strong { color: var(--ink); font-weight: 500; }
+  pre { margin: 0; background: var(--canvas-soft); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 16px; overflow-x: auto; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  pre .c { color: var(--ink-whisper); }
+  .note { margin-top: 16px; padding: 12px 14px; border-left: 2px solid var(--alert); background: var(--surface); font-size: 14px; color: var(--ink-mute); border-radius: 0 var(--r-xs) var(--r-xs) 0; }
+
+  /* Upcoming */
+  .next { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .slot { border: 1px dashed var(--line-strong); border-radius: var(--r-md); padding: 26px; min-height: 170px; display: flex; flex-direction: column; justify-content: space-between; }
+  .slot .pin { font-size: 40px; color: var(--ink-whisper); }
+  .slot p { margin: 0; color: var(--ink-mute); font-size: 14px; }
+
+  footer { padding: 40px 0 56px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer a { text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .project-top { grid-template-columns: 1fr; }
+    .project-info { border-right: 0; border-bottom: 1px solid var(--line); }
+    .features, .principles, .next { grid-template-columns: 1fr; }
+    .feature, .principle { border-right: 0; border-bottom: 1px solid var(--line); }
+    .feature:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
+    .feature:last-child, .principle:last-child { border-bottom: 0; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 16px; }
+    nav a.eyebrow { display: none; }
+    .hero { padding: 56px 0 48px; }
+    section.block { padding: 56px 0; }
+    .project-info, .mock-wrap, .panel { padding: 22px; }
+    .project-info h3 { font-size: 68px; }
+    .stat { padding: 20px 16px; }
+    .stat .num { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Replace Big Tech home">
+      <span class="mark"></span>
+      <span class="eyebrow">Replace Big Tech</span>
+    </a>
+    <nav>
+      <a class="eyebrow" href="#why">Why</a>
+      <a class="eyebrow" href="#apps">Apps</a>
+      <a class="eyebrow" href="#next">Next</a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Toggle light or dark theme" title="Toggle theme">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Independent software · Built by 999david7</span>
+      <h1 class="pin">Small apps that<br>replace <em>big tech.</em></h1>
+      <p class="lead">Native, lightweight alternatives to the apps that track you. Each one does its job, stays out of the way, and keeps your data on your machine.</p>
+      <div class="btns">
+        <a class="btn solid" href="#apps">See the apps</a>
+        <a class="btn" href="https://github.com/Replace-Big-Tech-Apps" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding:0">
+    <div class="stats">
+      <div class="stat"><span class="eyebrow">Apps shipped</span><span class="num pin">01</span></div>
+      <div class="stat"><span class="eyebrow">LBrowser size</span><span class="num pin">~2<small>MB</small></span></div>
+      <div class="stat"><span class="eyebrow">Ad networks blocked</span><span class="num pin">~70</span></div>
+      <div class="stat"><span class="eyebrow">Telemetry</span><span class="num pin">0</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Principles</span><h2 class="pin">Why build these</h2></div>
+      </div>
+      <div class="principles">
+        <div class="principle">
+          <span class="eyebrow idx">01</span>
+          <h3 class="pin">Native &amp; tiny</h3>
+          <p>Built on the platform's own frameworks, not a bundled engine. Fast to launch, light on memory and disk.</p>
+        </div>
+        <div class="principle">
+          <span class="eyebrow idx">02</span>
+          <h3 class="pin">Private by default</h3>
+          <p>No accounts, no telemetry, no ads. Trackers are blocked rather than sold to.</p>
+        </div>
+        <div class="principle">
+          <span class="eyebrow idx">03</span>
+          <h3 class="pin">Open source</h3>
+          <p>Every line is on GitHub. Read it, build it yourself, or change it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="apps">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Portfolio</span><h2 class="pin">The apps</h2></div>
+      </div>
+
+      <article class="project">
+        <div class="project-top">
+          <div class="project-info">
+            <span class="eyebrow status"><span class="dot"></span>v1.0 · Released</span>
+            <h3 class="pin">LBrowser</h3>
+            <p>A tiny native macOS browser built with Swift and WebKit. It blocks ads and trackers, groups tabs, and has a calm ORBIS-style start page.</p>
+            <div class="tag-row">
+              <span class="tag amber">Replaces Chrome</span>
+              <span class="tag">Swift</span>
+              <span class="tag">SwiftUI</span>
+              <span class="tag">WebKit</span>
+              <span class="tag">macOS 15+</span>
+              <span class="tag">Apple Silicon &amp; Intel</span>
+            </div>
+            <div class="btns">
+              <a class="btn solid" href="https://github.com/Replace-Big-Tech-Apps/LBrowser/releases/latest" target="_blank" rel="noopener">Download .dmg</a>
+              <a class="btn" href="https://github.com/Replace-Big-Tech-Apps/LBrowser" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+          <div class="mock-wrap" aria-hidden="true">
+            <div class="mock">
+              <div class="mock-side">
+                <div class="lights"><i></i><i></i><i></i></div>
+                <div class="m-url"></div>
+                <div class="m-group"><b style="background:var(--alert)"></b>WORK</div>
+                <div class="m-tab on"></div>
+                <div class="m-tab"></div>
+                <div class="m-group"><b style="background:var(--positive)"></b>READ</div>
+                <div class="m-tab"></div>
+                <div class="m-tab"></div>
+                <div class="m-tab"></div>
+              </div>
+              <div class="mock-main">
+                <div class="shield">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
+                </div>
+                <div>
+                  <div class="eyebrow">LBrowser</div>
+                  <div class="clock pin" id="clock">09:41</div>
+                  <div class="mock-stats">
+                    <div>7<div class="eyebrow">Tabs</div></div>
+                    <div style="color:var(--alert)">142<div class="eyebrow">Blocked</div></div>
+                    <div>2<div class="eyebrow">Groups</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <span class="eyebrow idx">Ad blocking</span>
+            <h4>Blocks ~70 ad and tracker networks</h4>
+            <p>WebKit content-blocker rules plus cosmetic hiding. A YouTube script removes player ads. One shield button turns it off for a site.</p>
+          </div>
+          <div class="feature">
+            <span class="eyebrow idx">Private tabs</span>
+            <h4>Leave no trace</h4>
+            <p>Cookies and storage are thrown away when you close the tab. Passwords aren't saved, and private tabs are left out of session restore.</p>
+          </div>
+          <div class="feature">
+            <span class="eyebrow idx">Tab groups</span>
+            <h4>A sidebar you can organize</h4>
+            <p>Colored, collapsible, renameable groups with drag and drop. The vertical sidebar keeps long titles readable.</p>
+          </div>
+          <div class="feature">
+            <span class="eyebrow idx">Passwords</span>
+            <h4>Safespace integration</h4>
+            <p>Fill saved logins from your Safespace vault and save new ones on submit. Logins wait while the vault is locked.</p>
+          </div>
+          <div class="feature">
+            <span class="eyebrow idx">Start page</span>
+            <h4>ORBIS-style start page</h4>
+            <p>A big clock and session stats on a quiet canvas. Light, dark or system appearance.</p>
+          </div>
+          <div class="feature">
+            <span class="eyebrow idx">Everyday</span>
+            <h4>Session restore &amp; default browser</h4>
+            <p>Pick up where you left off, reopen closed tabs, and set LBrowser as your default browser.</p>
+          </div>
+        </div>
+
+        <div class="details">
+          <div class="tabs" role="tablist">
+            <button class="eyebrow" role="tab" aria-selected="true" aria-controls="p-keys" id="t-keys">Shortcuts</button>
+            <button class="eyebrow" role="tab" aria-selected="false" aria-controls="p-install" id="t-install">Install</button>
+            <button class="eyebrow" role="tab" aria-selected="false" aria-controls="p-build" id="t-build">Build</button>
+          </div>
+          <div class="panel" role="tabpanel" id="p-keys" aria-labelledby="t-keys">
+            <div class="kbd-grid">
+              <div class="kbd-row"><span>New / close tab</span><kbd>⌘T / ⌘W</kbd></div>
+              <div class="kbd-row"><span>Private tab</span><kbd>⇧⌘N</kbd></div>
+              <div class="kbd-row"><span>Reopen closed tab</span><kbd>⇧⌘T</kbd></div>
+              <div class="kbd-row"><span>New group</span><kbd>⇧⌘G</kbd></div>
+              <div class="kbd-row"><span>Address bar</span><kbd>⌘L</kbd></div>
+              <div class="kbd-row"><span>Toggle sidebar</span><kbd>⌘S</kbd></div>
+              <div class="kbd-row"><span>Next / previous tab</span><kbd>⌃Tab / ⌃⇧Tab</kbd></div>
+              <div class="kbd-row"><span>Jump to tab</span><kbd>⌘1–9</kbd></div>
+              <div class="kbd-row"><span>Back / forward / reload</span><kbd>⌘[ ⌘] ⌘R</kbd></div>
+              <div class="kbd-row"><span>Zoom in / out / reset</span><kbd>⌘= ⌘- ⌘0</kbd></div>
+            </div>
+          </div>
+          <div class="panel" role="tabpanel" id="p-install" aria-labelledby="t-install" hidden>
+            <ol class="steps">
+              <li>Download <strong>LBrowser-1.0.dmg</strong> from the <a href="https://github.com/Replace-Big-Tech-Apps/LBrowser/releases/latest" target="_blank" rel="noopener">latest release</a>.</li>
+              <li>Open it and drag <strong>LBrowser.app</strong> into Applications.</li>
+              <li>Launch it. If macOS blocks it, go to <strong>System Settings → Privacy &amp; Security → Open Anyway</strong>.</li>
+            </ol>
+            <div class="note">The app is ad-hoc signed and not notarized by Apple, which is why macOS asks the first time. A SHA-256 checksum is published next to the DMG.</div>
+          </div>
+          <div class="panel" role="tabpanel" id="p-build" aria-labelledby="t-build" hidden>
+<pre><span class="c"># Needs full Xcode (SwiftUI macros aren't in the Command Line Tools)</span>
+git clone https://github.com/Replace-Big-Tech-Apps/LBrowser.git
+cd LBrowser
+./build.sh                      <span class="c"># → build/LBrowser.app</span>
+./build.sh --install            <span class="c"># also copies to /Applications</span>
+./build.sh --universal --dmg    <span class="c"># universal DMG</span></pre>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="next">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Roadmap</span><h2 class="pin">What's next</h2></div>
+        <a class="btn" href="https://github.com/Replace-Big-Tech-Apps" target="_blank" rel="noopener">Follow on GitHub ↗</a>
+      </div>
+      <div class="next">
+        <div class="slot"><span class="eyebrow">Slot 02</span><div><div class="pin">Coming soon</div><p>The next big tech replacement is in the works.</p></div></div>
+        <div class="slot"><span class="eyebrow">Slot 03</span><div><div class="pin">Coming soon</div><p>Same rules: native, small, private, open source.</p></div></div>
+        <div class="slot"><span class="eyebrow">Your idea</span><div><div class="pin">Suggest one</div><p>Which app would you like replaced? <a href="https://github.com/Replace-Big-Tech-Apps/LBrowser/issues" target="_blank" rel="noopener">Open an issue</a>.</p></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="eyebrow">Replace Big Tech · <span id="year">2026</span></span>
+    <span class="eyebrow"><a href="https://github.com/Replace-Big-Tech-Apps" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/999david7" target="_blank" rel="noopener">999david7</a></span>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle (remembered per browser when storage is available)
+  const root = document.documentElement;
+  try { const t = localStorage.getItem("theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  document.getElementById("theme").addEventListener("click", () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  });
+
+  // Live clock in the start-page mock
+  const clock = document.getElementById("clock");
+  const tick = () => { const d = new Date(); clock.textContent = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
+  tick(); setInterval(tick, 10000);
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Details tabs
+  const tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(tab => tab.addEventListener("click", () => {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute("aria-selected", on);
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+  }));
+</script>
+</body>
+</html>
