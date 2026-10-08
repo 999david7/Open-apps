@@ -172,6 +172,23 @@
   pre .c { color: var(--ink-whisper); }
   .note { margin-top: 16px; padding: 12px 14px; border-left: 2px solid var(--alert); background: var(--surface); font-size: 14px; color: var(--ink-mute); border-radius: 0 var(--r-xs) var(--r-xs) 0; }
 
+  /* Repo grid */
+  .repos { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .repo {
+    border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px; text-decoration: none;
+    display: flex; flex-direction: column; gap: 10px; min-height: 230px; transition: border-color .15s, background .15s;
+  }
+  .repo:hover { border-color: var(--line-strong); background: var(--surface); }
+  .repo-top { display: flex; justify-content: space-between; align-items: center; }
+  .monogram { width: 40px; height: 40px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); display: grid; place-items: center; font-size: 30px; }
+  .repo h3 { font-size: 46px; margin: 6px 0 0; }
+  .repo p { margin: 0; color: var(--ink-mute); font-size: 14px; flex: 1; }
+  .repo-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 12px; color: var(--ink-mute); border-top: 1px solid var(--line); padding-top: 12px; }
+  .lang-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--alert); margin-right: 5px; }
+  .badge { font-family: "Zen Dots", sans-serif; font-size: 8px; letter-spacing: .14em; text-transform: uppercase; padding: 3px 7px; border-radius: var(--r-xs); border: 1px solid var(--line); color: var(--ink-mute); }
+  .badge.live { border-color: var(--positive); color: var(--positive); }
+  .repos-note { margin-top: 14px; font-size: 13px; color: var(--ink-whisper); }
+
   /* Upcoming */
   .next { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .slot { border: 1px dashed var(--line-strong); border-radius: var(--r-md); padding: 26px; min-height: 170px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -217,7 +234,7 @@
     <nav>
       <a class="eyebrow" href="#why">Why</a>
       <a class="eyebrow" href="#apps">Apps</a>
-      <a class="eyebrow" href="#next">Next</a>
+      <a class="eyebrow" href="#lbrowser">LBrowser</a>
       <button class="icon-btn" id="theme" type="button" aria-label="Toggle light or dark theme" title="Toggle theme">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
       </button>
@@ -240,7 +257,7 @@
 
   <div class="wrap" style="padding:0">
     <div class="stats">
-      <div class="stat"><span class="eyebrow">Apps shipped</span><span class="num pin">01</span></div>
+      <div class="stat"><span class="eyebrow">Apps</span><span class="num pin" id="repo-count">04</span></div>
       <div class="stat"><span class="eyebrow">LBrowser size</span><span class="num pin">~2<small>MB</small></span></div>
       <div class="stat"><span class="eyebrow">Ad networks blocked</span><span class="num pin">~70</span></div>
       <div class="stat"><span class="eyebrow">Telemetry</span><span class="num pin">0</span></div>
@@ -275,7 +292,18 @@
   <section class="block" id="apps">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow">Portfolio</span><h2 class="pin">The apps</h2></div>
+        <div><span class="eyebrow">Portfolio · every repository</span><h2 class="pin">The apps</h2></div>
+        <a class="btn" href="https://github.com/Replace-Big-Tech-Apps?tab=repositories" target="_blank" rel="noopener">All on GitHub ↗</a>
+      </div>
+      <div class="repos" id="repos" aria-live="polite"></div>
+      <p class="repos-note" id="repos-note"></p>
+    </div>
+  </section>
+
+  <section class="block" id="lbrowser">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow">Featured</span><h2 class="pin">LBrowser up close</h2></div>
       </div>
 
       <article class="project">
@@ -404,14 +432,10 @@ cd LBrowser
 
   <section class="block" id="next">
     <div class="wrap">
-      <div class="section-head">
-        <div><span class="eyebrow">Roadmap</span><h2 class="pin">What's next</h2></div>
-        <a class="btn" href="https://github.com/Replace-Big-Tech-Apps" target="_blank" rel="noopener">Follow on GitHub ↗</a>
-      </div>
-      <div class="next">
-        <div class="slot"><span class="eyebrow">Slot 02</span><div><div class="pin">Coming soon</div><p>The next big tech replacement is in the works.</p></div></div>
-        <div class="slot"><span class="eyebrow">Slot 03</span><div><div class="pin">Coming soon</div><p>Same rules: native, small, private, open source.</p></div></div>
-        <div class="slot"><span class="eyebrow">Your idea</span><div><div class="pin">Suggest one</div><p>Which app would you like replaced? <a href="https://github.com/Replace-Big-Tech-Apps/LBrowser/issues" target="_blank" rel="noopener">Open an issue</a>.</p></div></div>
+      <div class="slot" style="min-height:0;gap:14px">
+        <span class="eyebrow">Your idea</span>
+        <div class="pin" style="color:var(--ink);font-size:48px">Which app should be replaced next?</div>
+        <p>Suggest one by <a href="https://github.com/Replace-Big-Tech-Apps/LBrowser/issues" target="_blank" rel="noopener">opening an issue</a> or follow the account on <a href="https://github.com/Replace-Big-Tech-Apps" target="_blank" rel="noopener">GitHub</a>.</p>
       </div>
     </div>
   </section>
@@ -440,6 +464,55 @@ cd LBrowser
   const tick = () => { const d = new Date(); clock.textContent = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
   tick(); setInterval(tick, 10000);
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Every public repo, loaded live from GitHub. FALLBACK is used if the API
+  // can't be reached (offline or rate-limited).
+  const USER = "Replace-Big-Tech-Apps";
+  const FALLBACK = [
+    { name: "LBrowser", description: "A Webbrowser designed to be minimalistic and easy to use.", language: "Swift", stargazers_count: 0, pushed_at: "2026-10-08T12:16:25Z", size: 1, html_url: "https://github.com/Replace-Big-Tech-Apps/LBrowser" },
+    { name: "Quill", description: "a notes taking app to replace other main brand notes apps", language: null, stargazers_count: 0, pushed_at: "2026-10-08T12:25:04Z", size: 0, html_url: "https://github.com/Replace-Big-Tech-Apps/Quill" },
+    { name: "Calcium", description: "a calculator apps to replace other main brand calculator apps", language: null, stargazers_count: 0, pushed_at: "2026-10-08T12:25:33Z", size: 0, html_url: "https://github.com/Replace-Big-Tech-Apps/Calcium" },
+    { name: "Times", description: "A Clock app to replace other main brand Clock apps", language: null, stargazers_count: 0, pushed_at: "2026-10-08T12:26:09Z", size: 0, html_url: "https://github.com/Replace-Big-Tech-Apps/Times" },
+  ];
+  // Repos with a release to download.
+  const RELEASED = { LBrowser: "v1.0" };
+
+  const esc = str => String(str ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const tidy = d => { d = String(d || "No description yet.").trim(); return d[0].toUpperCase() + d.slice(1); };
+  const ago = iso => {
+    const days = Math.floor((Date.now() - new Date(iso)) / 864e5);
+    return days < 1 ? "today" : days === 1 ? "yesterday" : days < 30 ? days + " days ago" : new Date(iso).toLocaleDateString(undefined, { month: "short", year: "numeric" });
+  };
+
+  function renderRepos(list, live) {
+    list = list.filter(r => !r.fork && !r.archived && r.name !== USER)
+      .sort((a, b) => (b.name in RELEASED) - (a.name in RELEASED) || new Date(b.pushed_at) - new Date(a.pushed_at));
+    document.getElementById("repo-count").textContent = String(list.length).padStart(2, "0");
+    document.getElementById("repos").innerHTML = list.map(r => {
+      const rel = RELEASED[r.name];
+      const badge = rel ? `<span class="badge live">${esc(rel)} · Released</span>`
+        : r.size ? `<span class="badge">In development</span>` : `<span class="badge">Just started</span>`;
+      return `<a class="repo" href="${esc(r.html_url)}" target="_blank" rel="noopener">
+        <div class="repo-top"><span class="monogram pin">${esc(r.name[0])}</span>${badge}</div>
+        <h3 class="pin">${esc(r.name)}</h3>
+        <p>${esc(tidy(r.description))}</p>
+        <div class="repo-meta">
+          ${r.language ? `<span><span class="lang-dot"></span>${esc(r.language)}</span>` : ""}
+          <span>★ ${Number(r.stargazers_count) || 0}</span>
+          <span>Updated ${ago(r.pushed_at)}</span>
+        </div>
+      </a>`;
+    }).join("");
+    document.getElementById("repos-note").textContent = live
+      ? `Live from GitHub · ${list.length} public repositories`
+      : "Couldn't reach GitHub, so this is a saved list and may be out of date.";
+  }
+
+  renderRepos(FALLBACK, false);
+  fetch(`https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed`)
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(list => renderRepos(list, true))
+    .catch(() => {});
 
   // Details tabs
   const tabs = document.querySelectorAll('[role="tab"]');
